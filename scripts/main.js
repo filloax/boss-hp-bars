@@ -1,4 +1,4 @@
-import { BossHpBars } from './bossHpBar.js';
+import { BossHpBarsContainer } from './bossHpBarsContainer.js';
 import { Constants } from './constants.js';
 import { Logger } from './logger.js';
 
@@ -6,12 +6,13 @@ console.log("Hello World! This code runs immediately when the file is loaded.");
 
 async function preloadHandlebarTemplates() {
     const paths = [
-        '/modules/' + Constants.MOD_NAME + '/templates/template.hbs',
+        'modules/' + Constants.MOD_NAME + '/templates/container.hbs',
+        'modules/' + Constants.MOD_NAME + '/templates/bossBar.hbs',
     ];
 
     loadTemplates(paths);
     
-    Logger.debug("Loaded handlebar templates!");
+    Logger.debug("Loaded handlebar templates!", paths);
 }
 
 Hooks.on("init", () => {
@@ -26,7 +27,7 @@ Hooks.on('canvasReady', async () => {
     Logger.debug("Readying canvas!")
 
     if (!game.bossHpBars) {
-        game.bossHpBars = new BossHpBars();
+        game.bossHpBars = new BossHpBarsContainer();
 
         Hooks.on('updateToken', (scene, token, diff, options, idUser) => {
             Logger.debug("token", token, "diff", diff, "idUser", idUser)
@@ -42,7 +43,7 @@ Hooks.on('canvasReady', async () => {
                 game.bossHpBars.update();
         });
 
-        Hooks.on('renderBossHpBars', () => {
+        Hooks.on('renderBossHpBarsContainer', () => {
             game.bossHpBars.postRender();
             Logger.debug("Done rendering boss bars");
         })

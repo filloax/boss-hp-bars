@@ -1,0 +1,143 @@
+import { BossHpBar } from './bossHpBar.js';
+import { Constants } from './constants.js';
+import { Logger } from './logger.js';
+import { TokenBarFlagger } from './tokenBarFlagger.js';
+
+export class BossHpBarsContainer extends Application {
+    checkFlagChanges = false;
+    /** @type {Array.<BossHpBar>} */
+    bars = [];
+    
+    constructor() {
+        super();
+    }
+
+    /** @override */
+    static get defaultOptions() {
+        return mergeObject(super.defaultOptions, {
+            template: 'modules/' + Constants.MOD_NAME + '/templates/container.hbs',
+            id: 'bosshpbars',
+            classes: [],
+            scale: 1,
+            popOut: false,
+            minimizable: false,
+            resizable: true,
+            title: 'bosshpbars',
+            dragDrop: [],
+            tabs: [],
+            scrollY: []
+        });
+    }
+
+    /** @override */
+    getData(options = {}) {
+        const data = super.getData();
+        data.id = this.constructor.defaultOptions.id;
+        data.bars = this.bars;
+        Logger.debug('HUD data:', data);
+        return data;
+    }
+
+    update() {
+        Logger.debug("Updating bars")
+
+        this.bars.forEach(bar => bar.update())
+        this.bars = this.bars.filter(bar => !bar.shouldDelete);
+
+        //If flags were changed before, check for new valid tokens
+        if (this.checkFlagChanges) {
+            TokenBarFlagger.getTokensInSceneWithBar()
+                .filter(tk => !this.bars.some(bar => bar.getTokenId() === tk.id))
+                .forEach(tk => this.bars.push(new BossHpBar(tk)));
+        }
+
+        if (!this.shouldRenderBars()) {
+            this.close();
+        } else {
+            Logger.debug("Rendering...");
+            this.render(true);
+        }
+
+        Logger.debug("Update done")
+    }
+
+    postRender() {
+        this.setHudPos();
+    }
+
+    setHudPos(bot = 100, left = 0) {
+        return new Promise(resolve => {
+            let check = (function() {
+                let elmnt = this.element[0]
+                if (elmnt) {
+                    let screenSize = this.getAvaiableScreenSize();
+                    let pctWidth = 0.75;
+                    let width = screenSize.x * pctWidth;                    
+                    elmnt.style.width = width + 'px';
+
+                    elmnt.style.bottom = bot + 'px';
+                    elmnt.style.top = null;
+                    elmnt.style.left = (screenSize.x - width) / 2 + 'px';
+                    elmnt.style.position = 'fixed';
+
+                    elmnt.style.zIndex = 100;
+                    Logger.debug("Set bar container position!");
+                    resolve();
+                } else {
+                    setTimeout(check, 30);
+                }
+            }).bind(this);
+
+            check();
+        });
+    }
+
+    /**
+     * Relevant if token linked to bar either changed the value of the bar, which attribute it's linked to,
+     * the name, or the module flags
+     * Has side effect in case of flags change, enables checkFlagChanges to be used on next update
+     * @param {Token} token
+     * @param {Object} diff
+     * @return {boolean}
+     */
+    checkRelevantTokenChange(token, diff) {
+        // if x or y change, assume token is moving
+        if (diff.hasOwnProperty('y') || diff.hasOwnProperty('x'))
+            return false;
+
+        if (diff.hasOwnProperty("flags") && diff.flags[Constants.MOD_NAME]) {
+            this.checkFlagChanges = true;
+            Logger.debug("Flags were changed");
+            return true;
+        }
+        
+        return this.bars.some(bar => {
+            let result = bar.checkRelevantTokenChange(token, diff);
+            Logger.debug("Check bar:", bar.id, result);
+            if (result)
+                return true;
+        });
+    }
+
+    /** @return {boolean} */
+    checkRelevantActorChange(actor, diff) {
+        let tokenDataInScene = canvas.scene.data.tokens.find(token => token.actorId === actor.id);
+        if (!tokenDataInScene)
+            return false;
+
+        return this.isRelevantTokenChange(tokenDataInScene, diff)
+    }
+
+    shouldRenderBars() {
+        return this.bars.length > 0;
+    }
+
+    set checkFlagChanges(value) {
+        this.checkFlagChanges = value;
+        Logger.debug("Checking for new token bar flag changes ASAP");
+    }
+
+    getAvaiableScreenSize() {
+        return {x: window.innerWidth - (ui.sidebar._collapsed ? 0 : ui.sidebar.position.width), y: window.innerHeight}
+    }
+}

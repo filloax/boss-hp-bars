@@ -1,6 +1,6 @@
 import { Constants } from './constants.js';
 
-export class TokenBarFlagger {
+class TokenBarFlagger {
     /**
      * Set whether the token should be linked to a boss bar in the screen
      * @param {Token} token
@@ -23,6 +23,8 @@ export class TokenBarFlagger {
      * @return {Array<Token>}
      */
     static getTokensInSceneWithBar() {
-        return canvas.tokens.placeables.filter(this.hasTokenBossBar);
+        return canvas.tokens.placeables.filter(TokenBarFlagger.hasTokenBossBar);
     }
 }
+
+export { TokenBarFlagger };

@@ -1,11 +1,7 @@
 <div id={{id}}>
-    <div class="bosshpbar">
-    <p class="bossname">{{bossName}}</p>
-    <div class="hp-bg hp-box">
-        <div class="hp-fill" style="width: {{width}}">
-        </div>
-    </div>
-    </div>
+    {{#each bars}}
+    {{>"modules/boss-hp-bars/templates/bossBar.hbs"}}
+    {{/each}}
 </div>
 
 {{!-- 
