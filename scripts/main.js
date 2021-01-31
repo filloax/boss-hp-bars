@@ -43,8 +43,13 @@ Hooks.on('canvasReady', async () => {
         });
 
         Hooks.on('renderBossHpBars', () => {
-            game.bossHpBars?.postRender();
+            game.bossHpBars.postRender();
             Logger.debug("Done rendering boss bars");
+        })
+
+        Hooks.on('sidebarCollapse', () => {
+            game.bossHpBars.update();
+            Logger.debug("Sidebar collpase hook done");
         })
     }
 

@@ -1,13 +1,28 @@
+@bosshp-radius: 0.3rem;
+@bosshp-height: 0.8rem;
 @bosshp-border: 1px;
-@bosshp-radius: 0.1em;
-@bosshp-height: 0.8em;
 @bosshp-width: 100%; //of the main box whose width is set in js
 
 @bosshp-maincolor: rgba(135,18,18,1);
 @bosshp-gradient: linear-gradient(180deg, rgba(42,7,7,1) 0%, rgba(135,18,18,1) 25%, rgba(163,87,87,1) 35%, rgba(135,18,18,1) 44%, rgba(55,9,9,1) 100%); 
 
+@bosshp-fontsize: 1.5rem;
+
+.TextBorderShadows(@size, @color) {
+  @result: calc(-@size) 0 @color, 0 @size @color, @size 0 @color, 0 calc(-@size) @color;
+}
+
 .bosshpbar {
   margin: auto;
+  p {
+    color: white;
+    font-size: @bosshp-fontsize;
+    text-shadow: 0.1rem 0.1rem 0.2rem black, .TextBorderShadows(1px, black)[@result];
+    margin-bottom: 0.1rem;
+    position: relative;
+    left: calc(@bosshp-fontsize / 2);
+  }
+
   .hp-bg {
     background: rgba(0, 0, 0, 0.25);
   }    

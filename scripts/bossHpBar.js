@@ -80,7 +80,7 @@ export class BossHpBars extends Application {
                 let elmnt = this.element[0]
                 if (elmnt) {
                     let screenSize = this.getAvaiableScreenSize();
-                    let pctWidth = 0.9;
+                    let pctWidth = 0.75;
                     let width = screenSize.x * pctWidth;                    
                     elmnt.style.width = width + 'px';
 
@@ -103,7 +103,7 @@ export class BossHpBars extends Application {
 
     /**
      * Relevant if token linked to bar either changed the value of the bar, which attribute it's linked to,
-     * or the module flags
+     * the name, or the module flags
      * Has side effect in case of flags change, enables checkFlagChanges to be used on next update
      * @param {Token} token
      * @param {Object} diff
@@ -128,13 +128,17 @@ export class BossHpBars extends Application {
                 Logger.debug("Bar attribute was changed");
                 return true;
             }
+            if (diff.hasOwnProperty("name")) {
+                Logger.debug("Name was changed");
+                return true;
+            }
 
             // If the value of the attribute linked to the bar was changed
             let barAttribute = this.barData.token?.getBarAttribute(this.barData.barId);
 
-            Logger.debug("Bar attribute:", barAttribute, ", diff has:", diff.hasOwnProperty("actorData"), getProperty(diff.actorData.data, barAttribute?.attribute));
+            Logger.debug("Bar attribute:", barAttribute, ", diff has:", diff.hasOwnProperty("actorData"), getProperty(diff.actorData?.data, barAttribute?.attribute));
 
-            if (diff.hasOwnProperty("actorData") && getProperty(diff.actorData.data, barAttribute?.attribute)) {
+            if (diff.hasOwnProperty("actorData") && getProperty(diff.actorData?.data, barAttribute?.attribute)) {
                 Logger.debug("Bar value was changed");
                 return true;
             }
