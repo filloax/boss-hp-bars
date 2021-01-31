@@ -1,0 +1,45 @@
+@bosshp-border: 1px;
+@bosshp-radius: 0.1em;
+@bosshp-height: 0.8em;
+@bosshp-width: 90%;
+
+@bosshp-maincolor: rgba(135,18,18,1);
+@bosshp-gradient: linear-gradient(180deg, rgba(42,7,7,1) 0%, rgba(135,18,18,1) 25%, rgba(163,87,87,1) 35%, rgba(135,18,18,1) 44%, rgba(55,9,9,1) 100%); 
+
+.bosshpbar {
+  margin: auto;
+  .hp-bg {
+    background: rgba(0, 0, 0, 0.25);
+  }    
+  .hp-box {
+    width: @bosshp-width;
+    height: @bosshp-height;
+    position: fixed;
+    // top: 5px;
+    // left: 5px;
+    border: @bosshp-border solid #7d7d6d;
+    border-radius: @bosshp-radius;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      z-index: -1;
+      top: @bosshp-border-distancing;
+      left: @bosshp-border-distancing;
+      right: @bosshp-border-distancing;
+      bottom: @bosshp-border-distancing;
+      border: @bosshp-border solid #453c2c;
+      border-radius: @bosshp-radius;
+    }
+  }
+
+  .hp-fill {
+    background: @bosshp-maincolor;
+    background: @bosshp-gradient;
+    height: 100%;
+    z-index: 5;
+    border-radius: 1px;
+  }
+}
+
+@bosshp-border-distancing: -@bosshp-radius -1px;

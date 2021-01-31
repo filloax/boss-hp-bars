@@ -1,0 +1,34 @@
+<div id={{id}}>
+    <div class="bosshpbar">
+    <p class="bossname">{{bossName}}</p>
+    <div class="hp-bg hp-box">
+        <div class="hp-fill" style="width: {{width}}">
+        </div>
+    </div>
+    </div>
+</div>
+
+{{!-- 
+<div id="{{id}}" style="top: {{top}}; left: {{left}};">
+    {{#if actions.actorId}}
+    {{#if actions.hudTitle}}
+    <div id="tah-hudTitle">{{actions.hudTitle}}</div>
+    {{/if}}
+    <div id="tah-reposition"><i class="fas fa-arrows-alt"></i></div>
+    {{#each actions.categories}}
+    {{>"modules/token-action-hud/templates/category.hbs"}}
+    {{/each}}
+    {{#unless hovering}}
+    <div id="tah-categories"><i class="fa fa-book"></i></div>
+    {{/unless}}
+    {{/if}}
+</div> --}}
+
+{{!-- <div id="{{id}}" style="background: rgba(0, 0, 0, 0.3);">
+    <p>Prova!</p>
+    <p>{{testContent}}</p>
+</div> --}}
+
+{{!-- <div id="test-hud" style="top: 160; left: 120; width: 600; background: rgba(0, 0, 0, 0.3);">
+    <p>Prova!</p>
+</div> --}}
