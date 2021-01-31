@@ -5,9 +5,10 @@
   background: rgba(0, 0, 0, 0.25);
 }
 .bosshpbar .hp-box {
-  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
   height: 0.8em;
-  position: fixed;
   border: 1px solid #7d7d6d;
   border-radius: 0.1em;
 }
