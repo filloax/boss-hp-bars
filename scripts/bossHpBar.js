@@ -15,6 +15,8 @@ export class BossHpBar {
 
     couldRenderLastUpdate = true;
     id = "";
+    /** @type {Element} */
+    element = null; //set in container postRender()
 
     width = "";
     damageWidth = "";
@@ -54,10 +56,24 @@ export class BossHpBar {
             this.damageWidth = this.width;
         } else if (this.width !== this.damageWidth) {
             if (parseFloat(this.width) < parseFloat(this.damageWidth)) {
+                let animDelay = 1000;
+                let animDur = 500;
+
+                game.bossHpBars.blockUpdates(this.id);
                 setTimeout(() => {
-                    this.damageWidth = this.width;
-                    game.bossHpBars.update();
-                }, 1000);
+                    /**@type {Element} */
+                    let element = $(this.element).children(".hp-box").children(".damage-fill")[0];
+                    console.log(element)
+
+                    element.style.transition = "width " + animDur + "ms";
+                    element.style.width = this.width;
+                    setTimeout(() => {
+                        Logger.debug("Damage animation complete!");
+                        this.damageWidth = this.width;
+                        game.bossHpBars.unblockUpdates(this.id);
+                        game.bossHpBars.update();
+                    }, animDur);
+                }, animDelay);
             } else {
                 this.damageWidth = this.width;
             }

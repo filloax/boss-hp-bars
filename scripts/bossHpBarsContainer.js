@@ -8,6 +8,9 @@ export class BossHpBarsContainer extends Application {
     /** @type {Array.<BossHpBar>} */
     bars = [];
     viewedBars = [];
+
+    updateBlocks = 0;
+    updateBlocksObj = {};
     
     constructor() {
         super();
@@ -40,6 +43,11 @@ export class BossHpBarsContainer extends Application {
     }
 
     update() {
+        if (this.isBlockingUpdates()) {
+            Logger.debug("Updates temporarily blocked, not updating bars")
+            return;
+        }
+
         Logger.debug("Updating bars")
 
         this.bars.forEach(bar => bar.update())
@@ -65,6 +73,9 @@ export class BossHpBarsContainer extends Application {
 
     postRender() {
         this.setHudPos();
+        this.bars.forEach(bar => {
+            bar.element = $('#bosshpbars div[name="' + bar.id + '"]')[0];
+        })
     }
 
     setHudPos(bot = 100, left = 0) {
@@ -150,5 +161,33 @@ export class BossHpBarsContainer extends Application {
 
     getAvaiableScreenSize() {
         return {x: window.innerWidth - (ui.sidebar._collapsed ? 0 : ui.sidebar.position.width), y: window.innerHeight}
+    }
+
+    isBlockingUpdates() {
+        return this.updateBlocks > 0;
+    }
+
+    /** 
+     * Block boss health bar updates
+     * @param {string} id identifier for the blocking source, in case for instance more bars are animating
+     * @return {boolean}
+     */
+    blockUpdates(id = "default") {
+        if (!id in this.updateBlocksObj) {
+            this.updateBlocks++;
+        }
+        this.updateBlocksObj[id] = true;
+    }
+
+    /** 
+     * Re-enable boss health bar updates (if no other blocks are active)
+     * @param {string} id identifier for the blocking source, in case for instance more bars are animating
+     * @return {boolean}
+     */
+    unblockUpdates(id = "default") {
+        if (id in this.updateBlocksObj) {
+            this.updateBlocks--;
+            delete this.updateBlocksObj[id];
+        }
     }
 }
