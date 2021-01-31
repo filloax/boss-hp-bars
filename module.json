@@ -2,7 +2,7 @@
     "name": "boss-hp-bars",
     "title": "Souls-Like Boss HP Bars",
     "description": "Adds Dark Souls-like HP bars for bosses and other tokens.",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "author": "Filloax",
     "esmodules": [
         "scripts/main.js"

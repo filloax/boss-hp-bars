@@ -4,7 +4,21 @@
 @bosshp-width: 100%; //of the main box whose width is set in js
 
 @bosshp-maincolor: rgba(135,18,18,1);
-@bosshp-gradient: linear-gradient(180deg, rgba(42,7,7,1) 0%, rgba(135,18,18,1) 25%, rgba(163,87,87,1) 35%, rgba(135,18,18,1) 44%, rgba(55,9,9,1) 100%); 
+@bosshp-gradient: linear-gradient(180deg, 
+  rgba(42,7,7,1) 0%, 
+  rgba(135,18,18,1) 25%, 
+  rgba(163,87,87,1) 35%, 
+  rgba(135,18,18,1) 44%,
+  rgba(55,9,9,1) 100%
+); 
+@bosshp-damage-hueshift: 45;
+@bosshp-damage-gradient: linear-gradient(180deg, 
+  spin(rgba(42,7,7,1), @bosshp-damage-hueshift) 0%, 
+  spin(rgba(135,18,18,1), @bosshp-damage-hueshift) 25%, 
+  spin(rgba(163,87,87,1), @bosshp-damage-hueshift) 35%, 
+  spin(rgba(135,18,18,1), @bosshp-damage-hueshift) 44%,
+  spin(rgba(55,9,9,1), @bosshp-damage-hueshift) 100%
+); 
 
 @bosshp-fontsize: 1.5rem;
 
@@ -27,6 +41,7 @@
     background: rgba(0, 0, 0, 0.25);
   }    
   .hp-box {
+    position: relative;
     margin-left: auto;
     margin-right: auto;
     width: @bosshp-width;
@@ -56,6 +71,15 @@
     height: 100%;
     z-index: 5;
     border-radius: 1px;
+    position: absolute;
+  }
+
+  .damage-fill {
+    .hp-fill();
+    z-index: 3;
+    background: spin(@bosshp-maincolor, @bosshp-damage-hueshift);
+    background: @bosshp-damage-gradient;
+    position: absolute;
   }
 }
 

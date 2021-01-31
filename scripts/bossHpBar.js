@@ -13,9 +13,10 @@ export class BossHpBar {
 
     nameEnabled = true;
     id = "";
-    shouldDelete = true;
+    shouldDelete = false;
 
     width = "";
+    damageWidth = "";
     showName = true;
 
     /**
@@ -30,10 +31,11 @@ export class BossHpBar {
         Logger.debug("New bar created", this)
 
         this.token = token;
-        this.update();
+        this.update(true);
     }
 
-    update() {
+    /** @param {boolean} immediate */
+    update(immediate = false) {
         if (!this.isBarTokenGood) { //if token is no longer valid for bar (eg not in scene), remove
             Logger.debug("Marked bar" + this.id + " for deletion");
             this.shouldDelete = true;
@@ -45,7 +47,23 @@ export class BossHpBar {
         let barAttribute = this.token?.getBarAttribute(this.barId);
         this.value = barAttribute?.value;
         this.max = barAttribute?.max;
+        Logger.debug(this.damageWidth)
         this.width = ((this.value || 1) / (this.max || 1) * 100) + "%";
+        Logger.debug(this.damageWidth)
+
+        if (immediate) {
+            this.damageWidth = this.width;
+        } else if (this.width !== this.damageWidth) {
+            if (parseFloat(this.width) < parseFloat(this.damageWidth)) {
+                setTimeout(() => {
+                    this.damageWidth = this.width;
+                    game.bossHpBars.update();
+                }, 1000);
+            } else {
+                this.damageWidth = this.width;
+            }
+        }
+
         this.name = this.token?.name;
         this.showName = !(!this.name || this.name === "") && this.nameEnabled;
 
