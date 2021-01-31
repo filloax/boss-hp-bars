@@ -11,11 +11,11 @@ class TokenBarFlagger {
     }
 
     /**
-     * @param {Token} token
+     * @param {Token|Token.data} token
      * @return {boolean}
      */
     static hasTokenBossBar(token) {
-        return token?.getFlag(Constants.MOD_NAME, "has-bar")
+        return token?.getFlag?.(Constants.MOD_NAME, "has-bar") || token?.flags?.[Constants.MOD_NAME]?.["has-bar"]
     }
 
     /**

@@ -6,14 +6,15 @@ export class BossHpBar {
 
     /** @type {Token} */
     token = null;
-    barId = "bar1";
+    tokenBarId = "bar1";
     value = NaN;
     max = NaN;
     name = "";
 
     nameEnabled = true;
+
+    couldRenderLastUpdate = true;
     id = "";
-    shouldDelete = false;
 
     width = "";
     damageWidth = "";
@@ -28,30 +29,28 @@ export class BossHpBar {
         this.id = newId;
         BossHpBar.lastId = newId;
 
-        Logger.debug("New bar created", this)
-
         this.token = token;
         this.update(true);
+
+        Logger.debug("New bar created", this)
     }
 
     /** @param {boolean} immediate */
     update(immediate = false) {
-        if (!this.isBarTokenGood) { //if token is no longer valid for bar (eg not in scene), remove
-            Logger.debug("Marked bar" + this.id + " for deletion");
-            this.shouldDelete = true;
+        let shouldRender = this.shouldRender();
+        if (!shouldRender) {
+            this.couldRenderLastUpdate = shouldRender;
             return;
         }
 
         Logger.debug("Updating bar " + this.id + "...");
 
-        let barAttribute = this.token?.getBarAttribute(this.barId);
+        let barAttribute = this.token?.getBarAttribute(this.tokenBarId);
         this.value = barAttribute?.value;
         this.max = barAttribute?.max;
-        Logger.debug(this.damageWidth)
         this.width = ((this.value || 1) / (this.max || 1) * 100) + "%";
-        Logger.debug(this.damageWidth)
 
-        if (immediate) {
+        if (immediate || !this.couldRenderLastUpdate || this.damageWidth === "") {
             this.damageWidth = this.width;
         } else if (this.width !== this.damageWidth) {
             if (parseFloat(this.width) < parseFloat(this.damageWidth)) {
@@ -68,6 +67,8 @@ export class BossHpBar {
         this.showName = !(!this.name || this.name === "") && this.nameEnabled;
 
         Logger.debug("After update:", this)
+
+        this.couldRenderLastUpdate = shouldRender;
     }
 
     /**
@@ -82,7 +83,7 @@ export class BossHpBar {
             Logger.debug("Relevant token was changed, checking diffs:", diff);
 
             // If which attribute is linked to the bar was changed
-            if (diff.hasOwnProperty(this.barId)) {
+            if (diff.hasOwnProperty(this.tokenBarId)) {
                 Logger.debug("Bar attribute was changed");
                 return true;
             }
@@ -92,7 +93,7 @@ export class BossHpBar {
             }
 
             // If the value of the attribute linked to the bar was changed
-            let barAttribute = this.token?.getBarAttribute(this.barId);
+            let barAttribute = this.token?.getBarAttribute(this.tokenBarId);
 
             Logger.debug("Bar attribute:", barAttribute, ", diff has:", diff.hasOwnProperty("actorData"), getProperty(diff.actorData?.data, barAttribute?.attribute));
 
@@ -105,13 +106,11 @@ export class BossHpBar {
         return false;
     }
 
-    /** 
-     * Whether the token should have a boss bar linked to it
-     * @param {Token} token defaults to this.token
-     * @return {boolean}
-     */
-    isBarTokenGood(token = this.token) {
-        return token?.scene.isView && TokenBarFlagger.hasTokenBossBar(token);
+    /** @return {boolean} */
+    shouldRender() {
+        return this.token?.scene.isView 
+            && TokenBarFlagger.hasTokenBossBar(this.token) 
+            && this.token.visible;
     }
 
     getTokenId() {

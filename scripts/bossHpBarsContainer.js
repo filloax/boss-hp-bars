@@ -7,6 +7,7 @@ export class BossHpBarsContainer extends Application {
     checkFlagChanges = false;
     /** @type {Array.<BossHpBar>} */
     bars = [];
+    viewedBars = [];
     
     constructor() {
         super();
@@ -33,7 +34,7 @@ export class BossHpBarsContainer extends Application {
     getData(options = {}) {
         const data = super.getData();
         data.id = this.constructor.defaultOptions.id;
-        data.bars = this.bars;
+        data.bars = this.viewedBars;
         Logger.debug('HUD data:', data);
         return data;
     }
@@ -42,7 +43,6 @@ export class BossHpBarsContainer extends Application {
         Logger.debug("Updating bars")
 
         this.bars.forEach(bar => bar.update())
-        this.bars = this.bars.filter(bar => !bar.shouldDelete);
 
         //If flags were changed before, check for new valid tokens
         if (this.checkFlagChanges) {
@@ -50,6 +50,8 @@ export class BossHpBarsContainer extends Application {
                 .filter(tk => !this.bars.some(bar => bar.getTokenId() === tk.id))
                 .forEach(tk => this.bars.push(new BossHpBar(tk)));
         }
+
+        this.viewedBars = this.bars.filter(bar => bar.shouldRender());
 
         if (!this.shouldRenderBars()) {
             this.close();
@@ -98,11 +100,12 @@ export class BossHpBarsContainer extends Application {
      * Has side effect in case of flags change, enables checkFlagChanges to be used on next update
      * @param {Token} token
      * @param {Object} diff
+     * @param {boolean} isCreate if the change was called in createToken
      * @return {boolean}
      */
-    checkRelevantTokenChange(token, diff) {
+    checkRelevantTokenChange(token, diff, isCreate) {
         // if x or y change, assume token is moving
-        if (diff.hasOwnProperty('y') || diff.hasOwnProperty('x'))
+        if (!isCreate && (diff.hasOwnProperty('y') || diff.hasOwnProperty('x')))
             return false;
 
         if (diff.hasOwnProperty("flags") && diff.flags[Constants.MOD_NAME]) {
@@ -128,8 +131,16 @@ export class BossHpBarsContainer extends Application {
         return this.isRelevantTokenChange(tokenDataInScene, diff)
     }
 
+    tryDeleteBar(token) {
+        if (TokenBarFlagger.hasTokenBossBar(token)) {
+            Logger.debug("Removing token bar for " + token._id);
+            this.bars = this.bars.filter(bar => bar.getTokenId() !== token._id);
+            this.update();
+        }
+    }
+
     shouldRenderBars() {
-        return this.bars.length > 0;
+        return this.viewedBars.length > 0;
     }
 
     set checkFlagChanges(value) {

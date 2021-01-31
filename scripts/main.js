@@ -29,18 +29,33 @@ Hooks.on('canvasReady', async () => {
     if (!game.bossHpBars) {
         game.bossHpBars = new BossHpBarsContainer();
 
-        Hooks.on('updateToken', (scene, token, diff, options, idUser) => {
-            Logger.debug("token", token, "diff", diff, "idUser", idUser)
+        Hooks.on('updateToken', (scene, token, diff, options, userId) => {
+            Logger.debug("token", token, "diff", diff, "userId", userId)
             Logger.debug("-------")
             if (game.bossHpBars.checkRelevantTokenChange(token, diff))
                 game.bossHpBars.update();
         });
 
-        Hooks.on('updateActor', (actor, diff, options, idUser) => {
-            Logger.debug("actor", actor, "diff", diff, "idUser", idUser)
+        Hooks.on('updateActor', (actor, diff, options, userId) => {
+            Logger.debug("actor", actor, "diff", diff, "userId", userId)
             Logger.debug("-------")
             if (game.bossHpBars.checkRelevantActorChange(actor, diff))
                 game.bossHpBars.update();
+        });
+
+        Hooks.on('createToken', (scene, token, options, userId) => {
+            Logger.debug("create: token", token, "userId", userId)
+            Logger.debug("-------")
+            setTimeout(() => {
+                if (game.bossHpBars.checkRelevantTokenChange(token, token, true))
+                    game.bossHpBars.update();
+            }, 5);
+        });
+
+        Hooks.on('deleteToken', (scene, token, diff, userId) => {
+            Logger.debug("delete: token", token, "diff", diff, "userId", userId)
+            Logger.debug("-------")
+            game.bossHpBars.tryDeleteBar(token);
         });
 
         Hooks.on('renderBossHpBarsContainer', () => {
