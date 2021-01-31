@@ -72,17 +72,17 @@
     z-index: 5;
     border-radius: 1px;
     position: absolute;
+    transition-timing-function: linear;
+    // transition: width 1s;
   }
 
   .damage-fill {
     .hp-fill();
-    z-index: 3;
+    z-index: 1;
     background: spin(@bosshp-maincolor, @bosshp-damage-hueshift);
     background: @bosshp-damage-gradient;
-    position: absolute;
-    // transition: width 1s;
     transition-timing-function: ease;
-    // transition-delay: 500ms;
+    position: absolute;
   }
 }
 

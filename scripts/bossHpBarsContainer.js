@@ -75,6 +75,7 @@ export class BossHpBarsContainer extends Application {
         this.setHudPos();
         this.bars.forEach(bar => {
             bar.element = $('#bosshpbars div[name="' + bar.id + '"]')[0];
+            bar.postRender();
         })
     }
 
@@ -139,7 +140,7 @@ export class BossHpBarsContainer extends Application {
         if (!tokenDataInScene)
             return false;
 
-        return this.isRelevantTokenChange(tokenDataInScene, diff)
+        return this.checkRelevantTokenChange(tokenDataInScene, diff)
     }
 
     tryDeleteBar(token) {

@@ -39,6 +39,7 @@
   z-index: 5;
   border-radius: 1px;
   position: absolute;
+  transition-timing-function: linear;
 }
 .bosshpbar .damage-fill {
   background: #871212;
@@ -46,9 +47,10 @@
   height: 100%;
   z-index: 5;
   border-radius: 1px;
-  z-index: 3;
+  transition-timing-function: linear;
+  z-index: 1;
   background: #876a12;
   background: linear-gradient(180deg, #2a2107 0%, #876a12 25%, #a39057 35%, #876a12 44%, #372c09 100%);
-  position: absolute;
   transition-timing-function: ease;
+  position: absolute;
 }
