@@ -21,6 +21,8 @@ export class BossHpBar {
     element = null; //set in container postRender()
     prevValue = NaN;
     doOnPostRender = [];
+    animationTimeouts = {};
+    numAnimationTimeouts = 0;
 
     width = "";
 
@@ -64,6 +66,21 @@ export class BossHpBar {
 
         Logger.debug("Updating bar " + this.id + "...");
 
+        // If animations are already running
+        if (this.numAnimationTimeouts > 0) {
+            Logger.debug("Clearing " + this.numAnimationTimeouts + " waiting timeouts");
+            for (const [key, timeout] of Object.entries(this.animationTimeouts)) {
+                clearTimeout(timeout);
+            }
+            this.animationTimeouts = {};
+            this.numAnimationTimeouts = 0;
+
+            let transitionValues = this.getMidTransitionValues();
+            Logger.debug("Mid animation values:", transitionValues)
+            this.width = transitionValues.width;
+            this.damageWidth = transitionValues.damageWidth;
+        }
+
         let barAttribute = this.token?.getBarAttribute(this.tokenBarId);
         this.value = barAttribute?.value;
         if (skipAnimations || !this.restoreAnimEnabled)
@@ -74,14 +91,18 @@ export class BossHpBar {
         if (this.value === 0)
             newWidth = "0%"; //was janky with the formula for some reason
 
-        if (!isNaN(this.prevValue) && !isNaN(this.value) && this.prevValue < this.value) { //animate health restore
-            this.animateElementWidth(".hp-fill", 150, 2000, newWidth, () => {
+        //animate health restore
+        if (!isNaN(this.prevValue) && !isNaN(this.value) && this.prevValue < this.value) {
+            this.damageWidth = this.width; // in case it was different due to different animations mingling
+
+            let hpRestoreSpeed = 33; //percent per second
+            let hpRestoreTime = Math.floor( (parseFloat(newWidth) - parseFloat(this.width)) / hpRestoreSpeed * 1000 );
+            this.animateElementWidth(".hp-fill", 25, hpRestoreTime, newWidth, () => {
                 Logger.debug("Restore animation complete!");
                 this.width = newWidth;
             });
         } else {
             this.width = newWidth;
-            Logger.debug("Set width lower");
         }
 
         Logger.debug("New width:", this.width, parseFloat(this.width), ", target:", newWidth);
@@ -89,16 +110,15 @@ export class BossHpBar {
 
         if (skipAnimations || !this.damageAnimEnabled) {
             this.damageWidth = this.width;
-            Logger.debug("Set dmg upper");
         } else if (this.width !== this.damageWidth) {
             Logger.debug("Compare damage width:", parseFloat(this.width), parseFloat(this.damageWidth))
+            // if health was lowered, animate damage taken
             if (parseFloat(this.width) < parseFloat(this.damageWidth)) {
                 this.animateElementWidth(".damage-fill", 1000, 500, this.width, () => {
                     Logger.debug("Damage animation complete!");
                     this.damageWidth = this.width;
                 });
             } else {
-                Logger.debug("Set dmg thing");
                 this.damageWidth = this.width;
             }
         }
@@ -120,6 +140,9 @@ export class BossHpBar {
             game.bossHpBars.blockUpdates(this.id);
 
             let startAnimation = function() {
+                delete this.animationTimeouts['start'];
+                this.numAnimationTimeouts--;
+
                 /**@type {Element} */
                 let element = $(this.element).children(".hp-box").children(className)[0];
 
@@ -134,21 +157,68 @@ export class BossHpBar {
                 element.style.display = "block";
                 element.style["transition-duration"] =  (animDur - safetyTime) + "ms";
                 element.style["transition-property"] = "width";
-                console.log(element)
-                setTimeout(() => element.style.width = newWidth, safetyTime);
-                setTimeout(() => {
+
+                // see below where startAnimation is called for the animationTimeouts thing explanation
+                if (safetyTime > 0) {
+                    let delayedStartTimeout = setTimeout(() => {
+                        element.style.width = newWidth;
+
+                        delete this.animationTimeouts['delayedStart'];
+                        this.numAnimationTimeouts--;
+                    }, safetyTime);
+                    this.animationTimeouts['delayedStart'] = delayedStartTimeout;
+                    this.numAnimationTimeouts++;
+                } else {
+                    element.style.width = newWidth;
+                }
+
+                let completeTimeout = setTimeout(() => {
                     complete();
                     game.bossHpBars.unblockUpdates(this.id);
                     game.bossHpBars.update();
+
+                    delete this.animationTimeouts['complete'];
+                    this.numAnimationTimeouts--;
                 }, animDur);
+                this.animationTimeouts['complete'] = completeTimeout;
+                this.numAnimationTimeouts++;
             }.bind(this);
 
             if (animDelay > 0) {
-                setTimeout(startAnimation, animDelay);
+                // setTimeout returns an int that is the timeout id, keep track of it
+                // in an object (to avoid indexing indices)
+                // and then cancel it if needed
+                let startTimeout = setTimeout(startAnimation, animDelay);
+                this.animationTimeouts['start'] = startTimeout;
+                this.numAnimationTimeouts++;
             } else {
                 startAnimation();
             }
         });
+    }
+
+    getMidTransitionValues() {
+        let boxStyle = window.getComputedStyle( $(this.element).children(".hp-box")[0] );
+        let boxWidth = boxStyle.getPropertyValue('width');
+
+        let hpFill = $(this.element).children(".hp-box").children(".hp-fill")[0];
+        let compStylesHp = window.getComputedStyle(hpFill);
+        let hpWidth = compStylesHp.getPropertyValue('width');
+        if (hpWidth.endsWith("px")) {
+            hpWidth = (parseFloat(hpWidth) / parseFloat(boxWidth) * 100) + "%";
+        }
+
+        let damageFill = $(this.element).children(".hp-box").children(".damage-fill")[0];
+        let compStylesdamage = window.getComputedStyle(damageFill);
+        let damageWidth = compStylesdamage.getPropertyValue('width');
+        if (damageWidth.endsWith("px")) {
+            damageWidth = (parseFloat(damageWidth) / parseFloat(boxWidth) * 100) + "%";
+        }
+
+        return {
+            width: hpWidth,
+            damageWidth: damageWidth,
+        }
     }
 
     /**
