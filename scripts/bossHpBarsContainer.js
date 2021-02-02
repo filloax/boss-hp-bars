@@ -45,10 +45,11 @@ export class BossHpBarsContainer extends Application {
     update() {
         if (this.isBlockingUpdates()) {
             Logger.debug("Updates temporarily blocked, not updating bars")
+            setTimeout(this.update.bind(this), 500);
             return;
         }
 
-        Logger.debug("Updating bars")
+        Logger.debug("Updating bars <<<<<<<")
 
         this.bars.forEach(bar => bar.update())
 
@@ -94,7 +95,7 @@ export class BossHpBarsContainer extends Application {
                     elmnt.style.left = (screenSize.x - width) / 2 + 'px';
                     elmnt.style.position = 'fixed';
 
-                    elmnt.style.zIndex = 100;
+                    elmnt.style.zIndex = 0;
                     Logger.debug("Set bar container position!");
                     resolve();
                 } else {
@@ -174,7 +175,7 @@ export class BossHpBarsContainer extends Application {
      * @return {boolean}
      */
     blockUpdates(id = "default") {
-        if (!id in this.updateBlocksObj) {
+        if (!(id in this.updateBlocksObj)) {
             this.updateBlocks++;
         }
         this.updateBlocksObj[id] = true;

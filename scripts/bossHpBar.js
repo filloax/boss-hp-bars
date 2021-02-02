@@ -111,7 +111,7 @@ export class BossHpBar {
         if (skipAnimations || !this.damageAnimEnabled) {
             this.damageWidth = this.width;
         } else if (this.width !== this.damageWidth) {
-            Logger.debug("Compare damage width:", parseFloat(this.width), parseFloat(this.damageWidth))
+            // Logger.debug("Compare damage width:", parseFloat(this.width), parseFloat(this.damageWidth))
             // if health was lowered, animate damage taken
             if (parseFloat(this.width) < parseFloat(this.damageWidth)) {
                 this.animateElementWidth(".damage-fill", 1000, 500, this.width, () => {
