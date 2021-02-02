@@ -16,5 +16,14 @@
             "path": "lang/en.json"
         }
     ],
-    "styles": ["styles/styles.css"]
+    "styles": ["styles/styles.css"],
+    "packs": [
+        {
+          "name": "boss-bars-macros",
+          "label": "Souls Boss Bars Macros",
+          "path": "packs/souls-boss-bars.db",
+          "entity": "Macro",
+          "module": "boss-hp-bars"
+        }
+    ]
 }

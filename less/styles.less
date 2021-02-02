@@ -69,7 +69,7 @@
     background: @bosshp-maincolor;
     background: @bosshp-gradient;
     height: 100%;
-    z-index: 5;
+    z-index: 0;
     border-radius: 1px;
     position: absolute;
     transition-timing-function: linear;
@@ -78,7 +78,7 @@
 
   .damage-fill {
     .hp-fill();
-    z-index: 1;
+    z-index: -1;
     background: spin(@bosshp-maincolor, @bosshp-damage-hueshift);
     background: @bosshp-damage-gradient;
     transition-timing-function: ease;

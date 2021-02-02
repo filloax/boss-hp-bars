@@ -1,3 +1,5 @@
+import { Constants } from "./constants.js";
+
 export class Logger {
     static log(...args) {
         console.log("Dark Souls Boss Bars |", ...args)
@@ -8,6 +10,8 @@ export class Logger {
     }
 
     static debug(...args) {
-        Logger.log("Debug:", ...args);
+        if (game.settings.get(Constants.MOD_NAME, "debug-enabled")) {
+            Logger.log("Debug:", ...args);
+        }
     }
 }

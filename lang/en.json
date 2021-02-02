@@ -1,2 +1,8 @@
 {
+    "boss-hp-bars": {
+        "title": "Souls-Like Boss HP Bars",
+        "settings": {
+            "debug": "Enable debug messages"
+        }
+    }
 }
