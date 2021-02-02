@@ -159,7 +159,7 @@ export class BossHpBar {
      * @return {boolean}
      */
     checkRelevantTokenChange(token, diff) {
-        if (token._id === this.getTokenId()) {
+        if (token._id === this.getTokenId() || token.id === this.getTokenId()) {
             // Logger.debug("Relevant token was changed, checking diffs:", diff);
 
             // If which attribute is linked to the bar was changed
@@ -177,7 +177,8 @@ export class BossHpBar {
 
             // Logger.debug("Bar attribute:", barAttribute, ", diff has:", diff.hasOwnProperty("actorData"), getProperty(diff.actorData?.data, barAttribute?.attribute));
 
-            if (diff.hasOwnProperty("actorData") && getProperty(diff.actorData?.data, barAttribute?.attribute)) {
+            if (diff.hasOwnProperty("actorData") && getProperty(diff.actorData?.data, barAttribute?.attribute)
+            ||  diff.hasOwnProperty("data")      && getProperty(diff.data, barAttribute?.attribute)) {
                 // Logger.debug("Bar value was changed");
                 return true;
             }
@@ -194,7 +195,7 @@ export class BossHpBar {
     }
 
     getTokenId() {
-        return this.token?.id;
+        return this.token?.id || this.token?._id;
     }
 
     postRender() {
