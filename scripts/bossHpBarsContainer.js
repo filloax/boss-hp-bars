@@ -11,6 +11,8 @@ export class BossHpBarsContainer extends Application {
 
     updateBlocks = 0;
     updateBlocksObj = {};
+
+    updateTimeout = null;
     
     constructor() {
         super();
@@ -45,7 +47,10 @@ export class BossHpBarsContainer extends Application {
     update() {
         if (this.isBlockingUpdates()) {
             Logger.debug("Updates temporarily blocked, not updating bars")
-            setTimeout(this.update.bind(this), 500);
+            if (this.updateTimeout != null) {
+                clearTimeout(this.updateTimeout);
+            }
+            this.updateTimeout = setTimeout(this.update.bind(this), 500);
             return;
         }
 
@@ -68,8 +73,9 @@ export class BossHpBarsContainer extends Application {
             Logger.debug("Rendering...");
             this.render(true);
         }
+        this.updateTimeout = null
 
-        Logger.debug("Update done")
+        Logger.debug("Update done");
     }
 
     postRender() {

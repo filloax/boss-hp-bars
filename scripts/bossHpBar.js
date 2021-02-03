@@ -1,6 +1,6 @@
 import { Logger } from "./logger.js"
 import { TokenBarFlagger } from "./tokenBarFlagger.js"
-
+import { Constants} from "./constants.js"
 export class BossHpBar {
     static lastId = "0";
 
@@ -137,7 +137,9 @@ export class BossHpBar {
     animateElementWidth(className, animDelay, animDur, newWidth, complete) {
         this.doOnPostRender.push(() => {
             Logger.debug("About to animate, class:", className, "delay:", animDelay, "duration:", animDur, "width", newWidth);
-            game.bossHpBars.blockUpdates(this.id);
+            if (game.settings.get(Constants.MOD_NAME, "anim-block-update")) {
+                game.bossHpBars.blockUpdates(this.id);
+            }
 
             let startAnimation = function() {
                 delete this.animationTimeouts['start'];
@@ -174,7 +176,9 @@ export class BossHpBar {
 
                 let completeTimeout = setTimeout(() => {
                     complete();
-                    game.bossHpBars.unblockUpdates(this.id);
+                    if (game.settings.get(Constants.MOD_NAME, "anim-block-update")) {
+                        game.bossHpBars.unblockUpdates(this.id);
+                    }
                     game.bossHpBars.update();
 
                     delete this.animationTimeouts['complete'];
