@@ -3,8 +3,6 @@ import { Constants } from './constants.js';
 import { Logger } from './logger.js';
 import { registerSettings } from './settings.js';
 
-console.log("Hello World! This code runs immediately when the file is loaded.");
-
 async function preloadHandlebarTemplates() {
     const paths = [
         'modules/' + Constants.MOD_NAME + '/templates/container.hbs',
