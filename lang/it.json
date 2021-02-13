@@ -1,0 +1,15 @@
+{
+    "boss-hp-bars": {
+        "title": "Souls-Like Boss HP Bars",
+        "settings": {
+            "debug": {
+                "name": "Attiva debug",
+                "label": "Attiva messaggi di debug nella console (F12)"
+            },
+            "anim-block-update": {
+                "name": "Animazioni bloccano modifiche",
+                "label": "Se attivo, modifiche alle barre non avranno effetto finchè un animazinone alle barre (danno/cura) è attiva. Disabilitarlo potrebbe creare problemi nelle animazioni se sono sovrapposte."
+            }
+        }
+    }
+}

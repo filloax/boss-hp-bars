@@ -30,6 +30,10 @@ This is my first Foundry VTT module! I also am part of the team of the massive [
 **Version history**
 -----------
 
+**0.2.0**
+* Added a button in the Token HUD to enable and disable boss bars.
+* Added italian localisation, not that it matters much as there's only two settings.
+
 **0.1.0**
 * First release. No UI yet, or per-token config settings.
 
