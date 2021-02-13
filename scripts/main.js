@@ -2,6 +2,7 @@ import { BossHpBarsContainer } from './bossHpBarsContainer.js';
 import { Constants } from './constants.js';
 import { Logger } from './logger.js';
 import { registerSettings } from './settings.js';
+import { TokenBossBarSettings } from './tokenBossBarSettings.js';
 
 async function preloadHandlebarTemplates() {
     const paths = [
@@ -20,8 +21,11 @@ Hooks.on("init", () => {
     Logger.log("Initialized!")
 });
 
-// Hooks.on("ready", () => {
-// });
+Hooks.on("ready", () => {
+    Hooks.on('renderTokenHUD', (app, html, data) => { 
+        TokenBossBarSettings.addBossBarButton(app, html, data) 
+    });
+});
 
 Hooks.on('canvasReady', async () => {
     Logger.debug("Readying canvas!")

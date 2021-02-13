@@ -1,7 +1,7 @@
 import { BossHpBar } from './bossHpBar.js';
 import { Constants } from './constants.js';
 import { Logger } from './logger.js';
-import { TokenBarFlagger } from './tokenBarFlagger.js';
+import { TokenBossBarSettings } from './tokenBossBarSettings.js';
 
 export class BossHpBarsContainer extends Application {
     checkFlagChanges = false;
@@ -60,7 +60,7 @@ export class BossHpBarsContainer extends Application {
 
         //If flags were changed before, check for new valid tokens
         if (this.checkFlagChanges) {
-            TokenBarFlagger.getTokensInSceneWithBar()
+            TokenBossBarSettings.getTokensInSceneWithBar()
                 .filter(tk => !this.bars.some(bar => bar.getTokenId() === tk.id))
                 .forEach(tk => this.bars.push(new BossHpBar(tk)));
         }
@@ -151,7 +151,7 @@ export class BossHpBarsContainer extends Application {
     }
 
     tryDeleteBar(token) {
-        if (TokenBarFlagger.hasTokenBossBar(token)) {
+        if (TokenBossBarSettings.hasTokenBossBar(token)) {
             Logger.debug("Removing token bar for " + token._id);
             this.bars = this.bars.filter(bar => bar.getTokenId() !== token._id);
             this.update();
