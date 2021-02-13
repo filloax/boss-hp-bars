@@ -1,5 +1,5 @@
 import { Logger } from "./logger.js"
-import { TokenBarFlagger } from "./tokenBarFlagger.js"
+import { TokenBossBarSettings } from "./tokenBossBarSettings.js"
 import { Constants} from "./constants.js"
 export class BossHpBar {
     static lastId = "0";
@@ -264,7 +264,7 @@ export class BossHpBar {
     /** @return {boolean} */
     shouldRender() {
         return this.token?.scene.isView 
-            && TokenBarFlagger.hasTokenBossBar(this.token) 
+            && TokenBossBarSettings.hasTokenBossBar(this.token) 
             && this.token.visible;
     }
 
