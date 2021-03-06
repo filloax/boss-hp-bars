@@ -21,7 +21,7 @@ class TokenBossBarSettings {
     // called in hook in main.js
     static async addBossBarButton(app, html, data) {
         let token = app.object;
-        let wasBarActive = hasTokenBossBar(token);
+        let wasBarActive = this.hasTokenBossBar(token);
 
         let barbutton = $(`<div class="control-icon bossbar-btn"><i class="fas fa-bars"></i></div>`);
         if (wasBarActive) {
@@ -30,12 +30,12 @@ class TokenBossBarSettings {
 
         html.find('.col.right').prepend(barbutton);
         barbutton.find('i').click(async (ev) => { //click handler
-            let isBarActive = hasTokenBossBar(token);
+            let isBarActive = this.hasTokenBossBar(token);
             let btn = $(ev.currentTarget.parentElement);
             ev.preventDefault();
             ev.stopPropagation();
 
-            ui.notifications.info("Premuto pulsante!");
+            // ui.notifications.info("Premuto pulsante!");
             token.setFlag(Constants.MOD_NAME, "has-bar", !isBarActive);
 
             if (!isBarActive) {
@@ -51,7 +51,7 @@ class TokenBossBarSettings {
      * @return {Array<Token>}
      */
     static getTokensInSceneWithBar() {
-        return canvas.tokens.placeables.filter(TokenBossBarSettings.hasTokenBossBar);
+        return canvas.tokens.placeables.filter(this.hasTokenBossBar);
     }
 }
 
