@@ -30,6 +30,10 @@ This is my first Foundry VTT module! I also am part of the team of the massive [
 **Version history**
 -----------
 
+**0.2.1**
+* Added support for Bug Reporter.
+* Fixed button not appearing.
+
 **0.2.0**
 * Added a button in the Token HUD to enable and disable boss bars.
 * Added italian localisation, not that it matters much as there's only two settings.
