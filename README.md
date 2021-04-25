@@ -14,7 +14,7 @@ Until a UI is implemented, you can use the macros found in *compendium/macros/So
 **Upcoming features/to-do**
 -----------
 
-* An actual UI instead of using macros.
+~~* An actual UI instead of using macros.~~ Done!
 * Per-token settings for animation timing, disabling animations, color, visibility etc.
 * Macro triggers for health percentages.
 * Whatever comes to mind later
