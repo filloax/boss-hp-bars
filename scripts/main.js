@@ -23,7 +23,9 @@ Hooks.on("init", () => {
 
 Hooks.on("ready", () => {
     Hooks.on('renderTokenHUD', (app, html, data) => { 
-        TokenBossBarSettings.addBossBarButton(app, html, data) 
+        if (game.users.current.role >= game.settings.get(Constants.MOD_NAME, "min-button-role")) {
+            TokenBossBarSettings.addBossBarButton(app, html, data) 
+        }
     });
 });
 
