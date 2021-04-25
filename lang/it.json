@@ -9,6 +9,26 @@
             "anim-block-update": {
                 "name": "Animazioni bloccano modifiche",
                 "label": "Se attivo, modifiche alle barre non avranno effetto finchè un animazinone alle barre (danno/cura) è attiva. Disabilitarlo potrebbe creare problemi nelle animazioni se sono sovrapposte."
+            },
+            "pos-offset-x": {
+                "name": "Sposta UI (X)",
+                "label": ""
+            },
+            "pos-offset-y": {
+                "name": "Sposta UI (Y)",
+                "label": ""
+            },
+            "scale": {
+                "name": "Scala Globale",
+                "label": "Scala di tutto il segmento UI delle barre"
+            },
+            "scale-bar-x": {
+                "name": "Scala Larghezza Barre",
+                "label": "Scala larghezza delle barre senza avere effetto sul testo"
+            },
+            "min-button-role": {
+                "name": "Permesso Minimo per Barre",
+                "label": "Permesso minimo per avere il pulsante delle barre"
             }
         }
     }

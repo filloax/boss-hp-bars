@@ -40,6 +40,7 @@ export class BossHpBarsContainer extends Application {
         const data = super.getData();
         data.id = this.constructor.defaultOptions.id;
         data.bars = this.viewedBars;
+        data.scale = game.settings.get(Constants.MOD_NAME, "scale")
         Logger.debug('HUD data:', data);
         return data;
     }
@@ -79,26 +80,31 @@ export class BossHpBarsContainer extends Application {
     }
 
     postRender() {
-        this.setHudPos();
+        this.setHudPos(
+            game.settings.get(Constants.MOD_NAME, "pos-offset-y"),
+            game.settings.get(Constants.MOD_NAME, "pos-offset-x"),
+        );
         this.bars.forEach(bar => {
             bar.element = $('#bosshpbars div[name="' + bar.id + '"]')[0];
             bar.postRender();
         })
     }
 
-    setHudPos(bot = 100, left = 0) {
+    setHudPos(bot = 0, left = 0) {
+        const bottomOffset = 100
+        const leftOffset = 0
         return new Promise(resolve => {
             let check = (function() {
                 let elmnt = this.element[0]
                 if (elmnt) {
                     let screenSize = this.getAvaiableScreenSize();
-                    let pctWidth = 0.75;
+                    let pctWidth = 0.75 * game.settings.get(Constants.MOD_NAME, "scale-bar-x");
                     let width = screenSize.x * pctWidth;                    
                     elmnt.style.width = width + 'px';
 
-                    elmnt.style.bottom = bot + 'px';
+                    elmnt.style.bottom = bottomOffset + bot + 'px';
                     elmnt.style.top = null;
-                    elmnt.style.left = (screenSize.x - width) / 2 + 'px';
+                    elmnt.style.left = leftOffset + left + (screenSize.x - width) / 2 + 'px';
                     elmnt.style.position = 'fixed';
 
                     elmnt.style.zIndex = 0;

@@ -9,6 +9,26 @@
             "anim-block-update": {
                 "name": "Animations block updates",
                 "label": "If checked, damage/heal animations will block updates to the bars until done, including new ones being added. If this is disabled, it might lead to janky animations when bars are added or changed while an animation is playing."
+            },
+            "pos-offset-x": {
+                "name": "Position offset (X)",
+                "label": ""
+            },
+            "pos-offset-y": {
+                "name": "Position offset (Y)",
+                "label": ""
+            },
+            "scale": {
+                "name": "Global Scale",
+                "label": "Scale for the whole boss bars segment of the UI"
+            },
+            "scale-bar-x": {
+                "name": "Scale Bar Width",
+                "label": "Stretch bars without affecting text"
+            },
+            "min-button-role": {
+                "name": "Minimum Bar Permission",
+                "label": "Minimum permission to have the boss bar button"
             }
         }
     }
