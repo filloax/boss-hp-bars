@@ -30,6 +30,10 @@ This is my first Foundry VTT module! I also am part of the team of the massive [
 **Version history**
 -----------
 
+**0.2.2**
+* Added button permission settings, by default players don't have it
+* Added UI offset and scale settings
+
 **0.2.1**
 * Added support for Bug Reporter.
 * Fixed button not appearing.
