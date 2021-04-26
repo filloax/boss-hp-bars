@@ -12,19 +12,35 @@
             },
             "pos-offset-x": {
                 "name": "Position offset (X)",
-                "label": ""
+                "label": " "
             },
             "pos-offset-y": {
                 "name": "Position offset (Y)",
-                "label": ""
+                "label": " "
             },
             "scale": {
-                "name": "Global Scale",
+                "name": "HUD Scale",
                 "label": "Scale for the whole boss bars segment of the UI"
             },
             "scale-bar-x": {
                 "name": "Scale Bar Width",
                 "label": "Stretch bars without affecting text"
+            },
+            "g-pos-offset-x": {
+                "name": "Global Position offset (X)",
+                "label": " "
+            },
+            "g-pos-offset-y": {
+                "name": "Global Position offset (Y)",
+                "label": "Affects all clients"
+            },
+            "g-scale": {
+                "name": "Global HUD Scale",
+                "label": "Affects all clients. Scale for the whole boss bars segment of the UI"
+            },
+            "g-scale-bar-x": {
+                "name": "Global Scale Bar Width",
+                "label": "Affects all clients. Stretch bars without affecting text"
             },
             "min-button-role": {
                 "name": "Minimum Bar Permission",

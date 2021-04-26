@@ -81,8 +81,8 @@ export class BossHpBarsContainer extends Application {
 
     postRender() {
         this.setHudPos(
-            game.settings.get(Constants.MOD_NAME, "pos-offset-y"),
-            game.settings.get(Constants.MOD_NAME, "pos-offset-x"),
+            game.settings.get(Constants.MOD_NAME, "pos-offset-y") + game.settings.get(Constants.MOD_NAME, "g-pos-offset-y"),
+            game.settings.get(Constants.MOD_NAME, "pos-offset-x") + game.settings.get(Constants.MOD_NAME, "g-pos-offset-x"),
         );
         this.bars.forEach(bar => {
             bar.element = $('#bosshpbars div[name="' + bar.id + '"]')[0];
@@ -98,7 +98,8 @@ export class BossHpBarsContainer extends Application {
                 let elmnt = this.element[0]
                 if (elmnt) {
                     let screenSize = this.getAvaiableScreenSize();
-                    let pctWidth = 0.75 * game.settings.get(Constants.MOD_NAME, "scale-bar-x");
+                    let pctWidth = 0.75 * game.settings.get(Constants.MOD_NAME, "scale-bar-x")
+                        * game.settings.get(Constants.MOD_NAME, "g-scale-bar-x");
                     let width = screenSize.x * pctWidth;                    
                     elmnt.style.width = width + 'px';
 
