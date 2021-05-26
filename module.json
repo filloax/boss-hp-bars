@@ -1,19 +1,24 @@
 {
     "name": "boss-hp-bars",
-    "title": "Souls-Like Boss HP Bars",
+    "title": "Ornstein - Souls-Like Boss HP Bars",
     "description": "Adds Dark Souls-like HP bars for bosses and other tokens.",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "author": "Filloax",
     "esmodules": [
         "scripts/main.js"
     ],
-    "minimumCoreVersion": "0.7.7",
-    "compatibleCoreVersion": "0.8.0",
+    "minimumCoreVersion": "0.8.0",
+    "compatibleCoreVersion": "0.8.9",
     "languages": [
         {
             "lang": "en",
             "name": "English",
             "path": "lang/en.json"
+        },
+        {
+            "lang": "it",
+            "name": "Italiano",
+            "path": "lang/it.json"
         }
     ],
     "styles": ["styles/styles.css"],
@@ -30,5 +35,5 @@
     "bugs": "https://github.com/filloax/boss-hp-bars/issues",
     "url": "https://github.com/filloax/boss-hp-bars",
     "manifest": "https://github.com/filloax/boss-hp-bars/releases/latest/download/module.json",
-    "download": "https://github.com/filloax/boss-hp-bars/releases/download/0.2.2/module.zip"
+    "download": "https://github.com/filloax/boss-hp-bars/releases/download/0.3.0/module.zip"
 }

@@ -1,4 +1,4 @@
-**Souls-Like Boss HP Bars**
+**Ornstein - Souls-Like Boss HP Bars**
 =======
 
 Module for FoundryVTT that adds Dark Souls-like HP bars for bosses and other tokens.
@@ -29,6 +29,11 @@ This is my first Foundry VTT module! I also am part of the team of the massive [
 
 **Version history**
 -----------
+
+**0.3.0**
+* Updated to Foundry VTT 0.8.x
+* Changed module title
+* Actually made it have the italian localisation as an option
 
 **0.2.2**
 * Added button permission settings, by default players don't have it
