@@ -150,11 +150,11 @@ export class BossHpBarsContainer extends Application {
 
     /** @return {boolean} */
     checkRelevantActorChange(actor, diff) {
-        let tokenDataInScene = canvas.scene.data.tokens.find(token => token.actorId === actor.id);
-        if (!tokenDataInScene)
+        let tokenInScene = actor.getActiveTokens().filter(token => token.data.actorLink)[0];
+        if (!tokenInScene)
             return false;
 
-        return this.checkRelevantTokenChange(tokenDataInScene, diff)
+        return this.checkRelevantTokenChange(tokenInScene.data, diff)
     }
 
     tryDeleteBar(token) {

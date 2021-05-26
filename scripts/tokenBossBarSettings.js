@@ -7,7 +7,7 @@ class TokenBossBarSettings {
      * @param {boolean} value 
      */
     static setTokenBossBar(token, value) {
-        token.setFlag(Constants.MOD_NAME, "has-bar", value)
+        token.document.setFlag(Constants.MOD_NAME, "has-bar", value)
     }
 
     /**
@@ -15,7 +15,7 @@ class TokenBossBarSettings {
      * @return {boolean}
      */
     static hasTokenBossBar(token) {
-        return token?.getFlag?.(Constants.MOD_NAME, "has-bar") || token?.flags?.[Constants.MOD_NAME]?.["has-bar"]
+        return token?.document.getFlag?.(Constants.MOD_NAME, "has-bar") || token?.flags?.[Constants.MOD_NAME]?.["has-bar"]
     }
 
     // called in hook in main.js
@@ -36,7 +36,7 @@ class TokenBossBarSettings {
             ev.stopPropagation();
 
             // ui.notifications.info("Premuto pulsante!");
-            token.setFlag(Constants.MOD_NAME, "has-bar", !isBarActive);
+            token.document.setFlag(Constants.MOD_NAME, "has-bar", !isBarActive);
 
             if (!isBarActive) {
                 barbutton.addClass("active");

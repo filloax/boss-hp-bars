@@ -35,7 +35,7 @@ Hooks.on('canvasReady', async () => {
     if (!game.bossHpBars) {
         game.bossHpBars = new BossHpBarsContainer();
 
-        Hooks.on('updateToken', (scene, token, diff, options, userId) => {
+        Hooks.on('updateToken', (token, diff, options, userId) => {
             Logger.debug("token", token, "diff", diff, "userId", userId)
             Logger.debug("-------")
             if (game.bossHpBars.checkRelevantTokenChange(token, diff))
@@ -49,7 +49,7 @@ Hooks.on('canvasReady', async () => {
                 game.bossHpBars.update();
         });
 
-        Hooks.on('createToken', (scene, token, options, userId) => {
+        Hooks.on('createToken', (token, options, userId) => {
             Logger.debug("create: token", token, "userId", userId)
             Logger.debug("-------")
             setTimeout(() => {
@@ -58,7 +58,7 @@ Hooks.on('canvasReady', async () => {
             }, 5);
         });
 
-        Hooks.on('deleteToken', (scene, token, diff, userId) => {
+        Hooks.on('deleteToken', (token, options, userId) => {
             Logger.debug("delete: token", token, "diff", diff, "userId", userId)
             Logger.debug("-------")
             game.bossHpBars.tryDeleteBar(token);
@@ -69,7 +69,7 @@ Hooks.on('canvasReady', async () => {
             Logger.debug("Done rendering boss bars");
         })
 
-        Hooks.on('sidebarCollapse', () => {
+        Hooks.on('collapseSidebar', () => {
             game.bossHpBars.update();
             Logger.debug("Sidebar collpase hook done");
         })

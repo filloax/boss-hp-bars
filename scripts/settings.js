@@ -126,7 +126,7 @@ export const registerSettings = function () {
         onChange: value => { updateHud(value,); }
     });
 
-    const roles = Object.entries(USER_ROLES)
+    const roles = Object.entries(CONST.USER_ROLES)
     .filter(([key, val]) => val !== 0)
     .reduce((roles2, [permission, val]) => {
         roles2[val] = permission;
@@ -135,7 +135,7 @@ export const registerSettings = function () {
 	game.settings.register(name, "min-button-role", {
         name: localize('settings.min-button-role.name'),
         hint: localize('settings.min-button-role.label'),
-        default: USER_ROLES.ASSISTANT,
+        default: CONST.USER_ROLES.ASSISTANT,
         config: true,
         isSelect: true,
         choices: roles,

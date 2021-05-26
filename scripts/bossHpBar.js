@@ -81,7 +81,7 @@ export class BossHpBar {
             this.damageWidth = transitionValues.damageWidth;
         }
 
-        let barAttribute = this.token?.getBarAttribute(this.tokenBarId);
+        let barAttribute = this.token?.document.getBarAttribute(this.tokenBarId);
         this.value = barAttribute?.value;
         if (skipAnimations || !this.restoreAnimEnabled)
             this.prevValue = this.value;
@@ -247,7 +247,7 @@ export class BossHpBar {
             }
 
             // If the value of the attribute linked to the bar was changed
-            let barAttribute = this.token?.getBarAttribute(this.tokenBarId);
+            let barAttribute = this.token?.document.getBarAttribute(this.tokenBarId);
 
             // Logger.debug("Bar attribute:", barAttribute, ", diff has:", diff.hasOwnProperty("actorData"), getProperty(diff.actorData?.data, barAttribute?.attribute));
 
