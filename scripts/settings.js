@@ -49,7 +49,7 @@ export const registerSettings = function () {
 
     game.settings.register(name, 'scale', {
         name: localize('settings.scale.name'),
-        hint: localize('settings.scale.hint'),
+        hint: localize('settings.scale.label'),
         scope: 'client',
         config: true,
         type: Number,
@@ -64,7 +64,7 @@ export const registerSettings = function () {
 
     game.settings.register(name, 'scale-bar-x', {
         name: localize('settings.scale-bar-x.name'),
-        hint: localize('settings.scale-bar-x.hint'),
+        hint: localize('settings.scale-bar-x.label'),
         scope: 'client',
         config: true,
         type: Number,
@@ -77,7 +77,56 @@ export const registerSettings = function () {
         onChange: value => { updateHud(value); }
     });
 
-    const roles = Object.entries(USER_ROLES)
+    game.settings.register(name, "g-pos-offset-x", {
+        name: localize("settings.g-pos-offset-x.name"),
+        hint: localize("settings.g-pos-offset-x.label"),
+        scope: "client",
+        config: true,
+        default: 0,
+        type: Number,
+        onChange: value => { updateHud(value); }
+    });
+    game.settings.register(name, "g-pos-offset-y", {
+        name: localize("settings.g-pos-offset-y.name"),
+        hint: localize("settings.g-pos-offset-y.label"),
+        scope: "world",
+        config: true,
+        default: 0,
+        type: Number,
+        onChange: value => { updateHud(value); }
+    });
+
+    game.settings.register(name, 'g-scale', {
+        name: localize('settings.g-scale.name'),
+        hint: localize('settings.g-scale.label'),
+        scope: 'world',
+        config: true,
+        type: Number,
+        range: {     
+          min: 0.5,
+          max: 2,
+          step: 0.1
+        },
+        default: 1,
+        onChange: value => { updateHud(value); }
+    });
+
+    game.settings.register(name, 'g-scale-bar-x', {
+        name: localize('settings.g-scale-bar-x.name'),
+        hint: localize('settings.g-scale-bar-x.label'),
+        scope: 'world',
+        config: true,
+        type: Number,
+        range: {     
+          min: 0.5,
+          max: 2,
+          step: 0.1
+        },
+        default: 1,
+        onChange: value => { updateHud(value,); }
+    });
+
+    const roles = Object.entries(CONST.USER_ROLES)
     .filter(([key, val]) => val !== 0)
     .reduce((roles2, [permission, val]) => {
         roles2[val] = permission;
@@ -85,8 +134,8 @@ export const registerSettings = function () {
     }, {});
 	game.settings.register(name, "min-button-role", {
         name: localize('settings.min-button-role.name'),
-        hint: localize('settings.min-button-role.hint'),
-        default: USER_ROLES.ASSISTANT,
+        hint: localize('settings.min-button-role.label'),
+        default: CONST.USER_ROLES.ASSISTANT,
         config: true,
         isSelect: true,
         choices: roles,
