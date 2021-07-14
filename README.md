@@ -30,6 +30,11 @@ This is my first Foundry VTT module! I also am part of the team of the massive [
 **Version history**
 -----------
 
+**0.3.1**
+* "Hot"fix where I actually merged the dev branch with the 0.8.x changes 
+   (sorry for the long time for updates,
+   between exams and other projects time to work onthe mod is little)
+
 **0.3.0**
 * Updated to Foundry VTT 0.8.x
 * Changed module title
